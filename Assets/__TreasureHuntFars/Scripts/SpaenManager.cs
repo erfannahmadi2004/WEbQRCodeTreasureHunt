@@ -22,12 +22,12 @@ public class SpaenManager : MonoBehaviour
 
     private void OnEnable()
     {
-        GameEvents.ValidQRScanned += SpawnPrefab;
+        GameEvents.ReqiredQRScanned += SpawnPrefab;
     }
 
     private void OnDisable()
     {
-        GameEvents.ValidQRScanned -= SpawnPrefab;
+        GameEvents.ReqiredQRScanned -= SpawnPrefab;
     }
 
     private void SpawnPrefab(int qrID)
@@ -36,6 +36,7 @@ public class SpaenManager : MonoBehaviour
         {
             GameObject toSpawnObject = prefabsToSpawn[qrID];
             spawnedObject = Instantiate(toSpawnObject, spawnpose, Quaternion.identity);
+            GameEvents.RaiseInProgress(qrID);
         }
     }
 
