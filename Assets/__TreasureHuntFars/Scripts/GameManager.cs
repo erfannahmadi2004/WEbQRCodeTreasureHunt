@@ -5,7 +5,6 @@ using System;
 public class GameManager : MonoBehaviour
 {
     public bool isStarted = false;
-    public bool isInProgress = false;
     private readonly HashSet<int> collectedPieces = new();
 
     [SerializeField]
@@ -16,14 +15,12 @@ public class GameManager : MonoBehaviour
     {
         GameEvents.ValidQRScanned += ScanningState;
         GameEvents.InProgress += InProgressState;
-        GameEvents.StepCompleted += StepCompleted;
     }
 
     private void OnDisable()
     {
         GameEvents.ValidQRScanned -= ScanningState;
         GameEvents.InProgress -= InProgressState;
-        GameEvents.StepCompleted -= StepCompleted;
     }
 
     private void ScanningState(int qrID)
@@ -43,7 +40,7 @@ public class GameManager : MonoBehaviour
             if (collectedPieces.Count >= qRCodeScanner.TotalQRCodeCount)
             {
                 Debug.Log("Everything is found and done");
-                qRCodeScanner.StopScanning();
+                GameEvents.RaiseMissionComplete();
             }
 
         }
@@ -63,11 +60,11 @@ public class GameManager : MonoBehaviour
 
     private void InProgressState(int ID)
     {
-        GameEvents.RaiseStepCompleted(ID);
+        
     }
 
     private void StepCompleted(int id)
     {
-        isInProgress = true;
+
     }
 }

@@ -34,12 +34,31 @@ public class QRCodeScanner : MonoBehaviour
 
     public bool IsScanning => isScanning;
 
+    private void OnEnable()
+    {
+        GameEvents.InProgress += StopnumScanning;
+        GameEvents.StepCompleted += StartScanning;
+        GameEvents.MissionComplete += StopScanning;      
+    }
+
+    private void OnDisable()
+    {
+        GameEvents.InProgress -= StopnumScanning;
+        GameEvents.StepCompleted -= StartScanning;
+        GameEvents.MissionComplete -= StopScanning; 
+    }
+
     public void StartScanning()
     {
         isScanning = true;
     }
 
     public void StopScanning()
+    {
+        isScanning = false;
+    }
+
+    public void StopnumScanning(int num)
     {
         isScanning = false;
     }

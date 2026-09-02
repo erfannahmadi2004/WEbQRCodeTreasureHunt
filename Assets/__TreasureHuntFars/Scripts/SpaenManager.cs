@@ -11,6 +11,8 @@ public class SpaenManager : MonoBehaviour
 
     private GameObject spawnedObject;
 
+    public bool isInProgress = false;
+
     private Vector3 spawnpose = new Vector3 (0,0,2.5f);
 
     public int trackableID;
@@ -23,11 +25,13 @@ public class SpaenManager : MonoBehaviour
     private void OnEnable()
     {
         GameEvents.ReqiredQRScanned += SpawnPrefab;
+        GameEvents.StepCompleted += ScenarioDone;
     }
 
     private void OnDisable()
     {
         GameEvents.ReqiredQRScanned -= SpawnPrefab;
+        GameEvents.StepCompleted -= ScenarioDone;
     }
 
     private void SpawnPrefab(int qrID)
@@ -35,8 +39,9 @@ public class SpaenManager : MonoBehaviour
         if (true)
         {
             GameObject toSpawnObject = prefabsToSpawn[qrID];
-            spawnedObject = Instantiate(toSpawnObject, spawnpose, Quaternion.identity);
+            spawnedObject = Instantiate(toSpawnObject, spawnpose, Quaternion.Euler(-20, 40, -15));
             GameEvents.RaiseInProgress(qrID);
+            isInProgress = true;
         }
     }
 
@@ -49,6 +54,11 @@ public class SpaenManager : MonoBehaviour
             Vector3.up,
             rotationSpeed * Time.deltaTime,
             Space.Self);
+    }
 
+    private void ScenarioDone()
+    {
+        if(isInProgress)
+        Destroy(spawnedObject);
     }
 }
