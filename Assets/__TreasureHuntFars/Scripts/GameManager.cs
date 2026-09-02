@@ -15,12 +15,14 @@ public class GameManager : MonoBehaviour
     {
         GameEvents.ValidQRScanned += ScanningState;
         GameEvents.InProgress += InProgressState;
+        GameEvents.StepCompleted += StepCompleted;
     }
 
     private void OnDisable()
     {
         GameEvents.ValidQRScanned -= ScanningState;
         GameEvents.InProgress -= InProgressState;
+        GameEvents.StepCompleted += StepCompleted;
     }
 
     private void ScanningState(int qrID)
@@ -36,12 +38,6 @@ public class GameManager : MonoBehaviour
             }
             Debug.Log("Mission Started");
             GameEvents.RaiseRequiredQRScanned(qrID);
-
-            if (collectedPieces.Count >= qRCodeScanner.TotalQRCodeCount)
-            {
-                Debug.Log("Everything is found and done");
-                GameEvents.RaiseMissionComplete();
-            }
 
         }
         else if (qrID == 0)
@@ -63,8 +59,13 @@ public class GameManager : MonoBehaviour
         
     }
 
-    private void StepCompleted(int id)
+    private void StepCompleted()
     {
-
+        if (collectedPieces.Count >= qRCodeScanner.TotalQRCodeCount)
+            {
+                Debug.Log("Everything is found and done");
+                GameEvents.RaiseMissionComplete();
+                return;
+            }
     }
 }
