@@ -15,14 +15,14 @@ public class GameManager : MonoBehaviour
     {
         GameEvents.ValidQRScanned += ScanningState;
         GameEvents.InProgress += InProgressState;
-        GameEvents.StepCompleted += StepCompleted;
+        GameEvents.GotInChest += StepCompleted;
     }
 
     private void OnDisable()
     {
         GameEvents.ValidQRScanned -= ScanningState;
         GameEvents.InProgress -= InProgressState;
-        GameEvents.StepCompleted += StepCompleted;
+        GameEvents.GotInChest += StepCompleted;
     }
 
     private void ScanningState(int qrID)

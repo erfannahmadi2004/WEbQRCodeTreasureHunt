@@ -4,6 +4,8 @@ using UnityEngine;
 public static class GameEvents
 {
     public static event Action StepCompleted;
+    public static event Action GotInChest;
+    public static event Action ObjectTap;
     public static event Action<int> ValidQRScanned;
     public static event Action<int> ReqiredQRScanned;
     public static event Action<int> InProgress;
@@ -23,4 +25,10 @@ public static class GameEvents
 
     public static void RaiseMissionComplete()
     { MissionComplete?.Invoke(); }
+
+    public static void RaiseGotInChest()
+    { GotInChest?.Invoke(); }
+
+    public static void RaiseObjectTap()
+    { ObjectTap?.Invoke(); }
 }
