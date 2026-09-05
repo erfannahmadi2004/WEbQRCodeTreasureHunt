@@ -1,3 +1,4 @@
+
 using System;
 using UnityEngine;
 
@@ -9,6 +10,7 @@ public static class GameEvents
     public static event Action<int> ValidQRScanned;
     public static event Action<int> ReqiredQRScanned;
     public static event Action<int> InProgress;
+    public static event Action<int> TextShowed;
     public static event Action MissionComplete;
 
     public static void RaiseStepCompleted()
@@ -31,4 +33,7 @@ public static class GameEvents
 
     public static void RaiseObjectTap()
     { ObjectTap?.Invoke(); }
+
+    public static void RaiseTextShowed(int qrID)
+    { TextShowed?.Invoke(qrID); }
 }

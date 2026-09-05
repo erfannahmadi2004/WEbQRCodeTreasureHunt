@@ -36,15 +36,15 @@ public class QRCodeScanner : MonoBehaviour
 
     private void OnEnable()
     {
-        GameEvents.InProgress += StopnumScanning;
-        GameEvents.StepCompleted += StartScanning;
+        GameEvents.ReqiredQRScanned += StopnumScanning;
+        GameEvents.GotInChest += StartScanning;
         GameEvents.MissionComplete += StopScanning;      
     }
 
     private void OnDisable()
     {
-        GameEvents.InProgress -= StopnumScanning;
-        GameEvents.StepCompleted -= StartScanning;
+        GameEvents.ReqiredQRScanned -= StopnumScanning;
+        GameEvents.GotInChest -= StartScanning;
         GameEvents.MissionComplete -= StopScanning; 
     }
 

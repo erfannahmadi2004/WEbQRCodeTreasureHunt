@@ -1,3 +1,4 @@
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -38,14 +39,14 @@ public class SpaenManager : MonoBehaviour
 
     private void OnEnable()
     {
-        GameEvents.ReqiredQRScanned += SpawnPrefab;
+        GameEvents.TextShowed += SpawnPrefab;
         GameEvents.GotInChest += ScenarioDone;
         GameEvents.ObjectTap += ObjectTapped;
     }
 
     private void OnDisable()
     {
-        GameEvents.ReqiredQRScanned -= SpawnPrefab;
+        GameEvents.TextShowed -= SpawnPrefab;
         GameEvents.GotInChest -= ScenarioDone;
         GameEvents.ObjectTap -= ObjectTapped;
     }
@@ -130,3 +131,4 @@ public class SpaenManager : MonoBehaviour
         }
     }
 }
+

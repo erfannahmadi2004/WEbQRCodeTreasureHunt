@@ -1,27 +1,33 @@
 using UnityEngine;
 using System.Collections.Generic;
-using System;
+using System.Linq;
 
 public class GameManager : MonoBehaviour
 {
     public bool isStarted = false;
-    private readonly HashSet<int> collectedPieces = new();
+    public readonly HashSet<int> collectedPieces = new();
 
     [SerializeField]
     private QRCodeScanner qRCodeScanner;
 
+    private void Start()
+    {
+        if (PlayerPrefs.GetString("phone") != "")
+        {
+            collectedPieces.UnionWith(StringToHashSet(PlayerPrefs.GetString("progress")));
+            isStarted = true;
+        }
+    }
 
     private void OnEnable()
     {
         GameEvents.ValidQRScanned += ScanningState;
-        GameEvents.InProgress += InProgressState;
         GameEvents.GotInChest += StepCompleted;
     }
 
     private void OnDisable()
     {
         GameEvents.ValidQRScanned -= ScanningState;
-        GameEvents.InProgress -= InProgressState;
         GameEvents.GotInChest += StepCompleted;
     }
 
@@ -38,6 +44,8 @@ public class GameManager : MonoBehaviour
             }
             Debug.Log("Mission Started");
             GameEvents.RaiseRequiredQRScanned(qrID);
+            string progressstate = HashSetToString(collectedPieces);
+            PlayerPrefs.SetString("progress",progressstate);
 
         }
         else if (qrID == 0)
@@ -54,11 +62,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void InProgressState(int ID)
-    {
-        
-    }
-
     private void StepCompleted()
     {
         if (collectedPieces.Count >= qRCodeScanner.TotalQRCodeCount)
@@ -68,4 +71,20 @@ public class GameManager : MonoBehaviour
                 return;
             }
     }
+
+    public string HashSetToString(HashSet<int> set)
+    {
+        return string.Join(",", set);
+    }
+
+    public HashSet<int> StringToHashSet(string data)
+    {
+        if (string.IsNullOrEmpty(data))
+            return new HashSet<int>();
+
+        return new HashSet<int>(
+            data.Split(',').Select(int.Parse)
+        );
+    }
 }
+

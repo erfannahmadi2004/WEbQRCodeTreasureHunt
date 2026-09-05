@@ -49,13 +49,13 @@ public class DraggableUI : MonoBehaviour,
 
     private void OnEnable()
     {
-        GameEvents.InProgress += ResetPosition;
+        GameEvents.TextShowed += ResetPosition;
         GameEvents.StepCompleted += GetInChest;
     }
 
     private void OnDisable()
     {
-        GameEvents.InProgress -= ResetPosition;
+        GameEvents.TextShowed -= ResetPosition;
         GameEvents.StepCompleted -= GetInChest;
     }
 
@@ -120,6 +120,7 @@ public class DraggableUI : MonoBehaviour,
 
     private void ResetPosition(int num)
     {
+        rawImage.raycastTarget = true;
         transform.position = initialPosition;
         transform.localScale = initialScale;
         rawImage.color = initialColor;
@@ -305,5 +306,6 @@ public class DraggableUI : MonoBehaviour,
 
             yield return null;
         }
+        rawImage.raycastTarget = false;
     }
 }
